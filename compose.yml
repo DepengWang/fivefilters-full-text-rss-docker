@@ -1,8 +1,11 @@
+name: fivefilters
+
 services:
   fullfeedrss:
     image: "heussd/fivefilters-full-text-rss:latest"
-    mem_limit: 2G
-    restart: always
+    container_name: fivefilters-full-text-rss
+    mem_limit: 1G
+    restart: unless-stopped
     environment:
       # Leave empty to disable admin section
       - FTR_ADMIN_PASSWORD=
@@ -10,6 +13,7 @@ services:
       - "rss-cache:/var/www/html/cache/rss"
       - "./custom:/var/www/html/site_config/custom"
     ports:
-      - "80:80"
+      # Keep the existing WeRSS service on host port 80 untouched.
+      - "8080:80"
 volumes:
   rss-cache:
